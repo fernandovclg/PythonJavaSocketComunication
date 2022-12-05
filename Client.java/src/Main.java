@@ -44,7 +44,7 @@ public class Main { //o nome era Socket
                 pw = new PrintWriter(s.getOutputStream());
                 pw.write( jog1 );
                 pw.flush();
-                System.out.println("Voce Jogou: " + jog1);
+                System.out.println("\n\nVoce Jogou: " + jog1);
                 String res;
                 while ((res = reader.readLine()) != null) {
                     System.out.println("Jogada do Adversário: " + res);
@@ -57,7 +57,7 @@ public class Main { //o nome era Socket
             System.out.println("Fail");
             e.printStackTrace();
         } catch (IOException e) {
-            System.out.println("Fail2");
+            System.out.println("Fim de Jogo");
             e.printStackTrace();
         }
 

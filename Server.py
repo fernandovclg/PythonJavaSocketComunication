@@ -69,16 +69,15 @@ def Menu():
     print("knock knock penny")
     print("knock knock penny")
 
+    print("Inicio do jogo!")
+
     print("Jogadas Permitidas:\n" +
                     "rock\n" +
                     "paper\n" +
                     "scissors\n" +
                     "lizard\n" +
                     "spock\n")
-    print("digite sua jogada: ")
-    jog1='paper'
-    # jog1 = input()
-    return(jog1)
+    
 
 def Heuristica(jog2,i):
     #decide sua jogada sem conhecimento do que o outro jogou
@@ -106,7 +105,7 @@ historico = []
 saldo =  [0,0,0,0,0]
 
 #Main
-
+Menu()
 i=0
 while True :
     if i<15:
@@ -116,6 +115,7 @@ while True :
             clientsocket.send((jog1+'\n').encode())
 
             jog2 = message
+            print("\n\nServer : " + jog1 + "\nClient : " + jog2)
             print("resutado foi : " + Jogo(jog1 , jog2))
             i=i+1
     else:
