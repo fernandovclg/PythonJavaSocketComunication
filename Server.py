@@ -29,10 +29,24 @@ def Codificar(jogada):
         return 1
     elif jogada == "scissors":
         return 2
-    elif jogada == "lizzard":
+    elif jogada == "lizard":
         return 3
     elif jogada == "spock":
         return 4
+    else:
+        print("ERROR")
+
+def Decodificar(indice):
+    if indice == 0:
+        return "rock"
+    elif indice==1:
+        return "paper"
+    elif indice == 2:
+        return "scissors"
+    elif indice == 3:
+        return "lizzard"
+    elif indice == 4:
+        return "spock"
     else:
         print("ERROR")
 
@@ -51,6 +65,10 @@ def Jogo (jog1,jog2):
         return("derrota")
   
 def Menu():
+    print("knock knock penny")
+    print("knock knock penny")
+    print("knock knock penny")
+
     print("Jogadas Permitidas:\n" +
                     "rock\n" +
                     "paper\n" +
@@ -61,32 +79,49 @@ def Menu():
     jog1='paper'
     # jog1 = input()
     return(jog1)
+
 def Heuristica(jog2,i):
+    #decide sua jogada sem conhecimento do que o outro jogou
     if i==0:
         jog1 = "paper"
     else:
-        jog1=historico[0][0]
+        max=-20000
+        for j in range(0,5):
+            if saldo[j]>=max:
+                max=saldo[j]
+                jog1=Decodificar(j)
+
+    #armazena os resultados
 
     historico.append([jog1 , jog2 , Jogo(jog1,jog2)])
+    if historico[i][2]=="vitoria":
+        saldo[Codificar(jog1)] += 1
+    elif historico[i][2]=="derrota":
+        saldo[Codificar(jog1)] += 1
+
+    #devolve a jogada decidida
     return(jog1)
 
 historico = []
+saldo =  [0,0,0,0,0]
 
 #Main
 
 i=0
 while True :
-    message = clientsocket.recv(1024).decode()
-    if message != "":
-        jog1 = Heuristica(message,i)
-        clientsocket.send((jog1+'\n').encode())
+    if i<15:
+        message = clientsocket.recv(1024).decode()
+        if message != "":
+            jog1 = Heuristica(message,i)
+            clientsocket.send((jog1+'\n').encode())
 
-        jog2 = message
-        print("resutado foi : " + Jogo(jog1 , jog2))
-        i=i+1
-    # else:
-        # print("nao")
-clientsocket.close()
+            jog2 = message
+            print("resutado foi : " + Jogo(jog1 , jog2))
+            i=i+1
+    else:
+        print("jogo finalizado")
+        clientsocket.close()
+        break
     
 
     
