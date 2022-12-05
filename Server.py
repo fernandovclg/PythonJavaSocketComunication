@@ -1,5 +1,6 @@
 #Imports Modules
 import socket
+# from array import *
 
 #Defines Server Values
 listensocket = socket.socket()
@@ -32,20 +33,22 @@ def Codificar(jogada):
         return 3
     elif jogada == "spock":
         return 4
+    else:
+        print("ERROR")
 
 def Jogo (jog1,jog2):
 
     M=[[ 0,-1, 1, 1,-1],
-       [ 1, 0,-1, 1,-1],
+       [ 1, 0,-1,-1, 1],
        [-1, 1, 0, 1,-1],
-       [-1,-1,-1, 0, 1],
-       [ 1, 1, 1,-1, 0]]
+       [-1, 1,-1, 0, 1],
+       [ 1,-1, 1,-1, 0]]
     if M[Codificar(jog1)][Codificar(jog2)]==1 :
         return("vitoria")
     elif M[Codificar(jog1)][Codificar(jog2)]==0 :
         return("empate")
     elif M[Codificar(jog1)][Codificar(jog2)]==-1 :
-        return("empate")
+        return("derrota")
   
 def Menu():
     print("Jogadas Permitidas:\n" +
@@ -58,21 +61,32 @@ def Menu():
     jog1='paper'
     # jog1 = input()
     return(jog1)
+def Heuristica(jog2,i):
+    if i==0:
+        jog1 = "paper"
+    else:
+        jog1=historico[0][0]
 
+    historico.append([jog1 , jog2 , Jogo(jog1,jog2)])
+    return(jog1)
+
+historico = []
 
 #Main
-jog1 = Menu()
-while running:
-    message = clientsocket.recv(1024).decode() #Receives Message
-    
-    
-    if not message == "":
-        clientsocket.sendall((jog1+'\n').encode())
+
+i=0
+while True :
+    message = clientsocket.recv(1024).decode()
+    if message != "":
+        jog1 = Heuristica(message,i)
+        clientsocket.send((jog1+'\n').encode())
+
         jog2 = message
-        print("resutado foi :" + Jogo(jog1 , jog2))
-        
-    #Closes Server If Message Is Nothing (Client Terminated)
-    else:
-        print("entrou no else")
-        clientsocket.close()
-        running = False
+        print("resutado foi : " + Jogo(jog1 , jog2))
+        i=i+1
+    # else:
+        # print("nao")
+clientsocket.close()
+    
+
+    

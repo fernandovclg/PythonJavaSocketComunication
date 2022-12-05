@@ -14,32 +14,33 @@ public class Main { //o nome era Socket
         Scanner leitor = new Scanner(System.in);
 
         try {
-            s = new Socket("DESKTOP-0UIS4QV",8000);
+            s = new Socket("DESKTOP-0UIS4QV", 8000);
             pw = new PrintWriter(s.getOutputStream());
             InputStreamReader inputReader = new InputStreamReader(s.getInputStream());
             BufferedReader reader = new BufferedReader(inputReader);
+            while(true) {
+                System.out.println("Jogadas Permitidas:" +
+                        "rock, " +
+                        "paper, " +
+                        "scissors, " +
+                        "lizard, " +
+                        "spock");
+                System.out.println("Digite sua jogada:");
+                String jogada = leitor.next();
 
+                pw = new PrintWriter(s.getOutputStream());
+                pw.write(jogada);
+                pw.flush();
 
-            System.out.println("Jogadas Permitidas:" +
-                    "rock, " +
-                    "paper, " +
-                    "scissors, " +
-                    "lizard, " +
-                    "spock");
-            System.out.println("Digite sua jogada:");
-            String jogada = leitor.next();
-
-            pw = new PrintWriter(s.getOutputStream());
-            pw.write(jogada);
-            pw.flush();
-
-            String res;
-            while( (res=reader.readLine()) != null){
-                System.out.println("Jogada do Adversário: "+res);
+                String res;
+                while ((res = reader.readLine()) != null) {
+                    System.out.println("Jogada do Adversário: " + res);
+                    break;
+                }
+                System.out.println("Saiu do while");
             }
-            System.out.println("Saiu do while");
-            pw.close();
-            s.close();
+//            pw.close();
+//            s.close();
         } catch (UnknownHostException e) {
             System.out.println("Fail");
             e.printStackTrace();
